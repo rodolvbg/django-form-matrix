@@ -1,0 +1,145 @@
+/*
+ * Matrix (templates/django_form_matrix). The colours are the ones of the
+ * Django admin when it is there; set the --form-matrix-* variables to use
+ * the matrix anywhere else.
+ */
+.form-matrix {
+	--form-matrix-border: var(--hairline-color, #ccc);
+	--form-matrix-heading-bg: var(--darkened-bg, #f8f8f8);
+	--form-matrix-quiet: var(--body-quiet-color, #666);
+
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	width: 100%;
+	max-width: 900px;
+}
+
+.form-matrix-section {
+	border: 1px solid var(--form-matrix-border);
+	border-radius: 4px;
+}
+
+/* Unfold draws its chevron at the end of every summary, absolutely placed. */
+.form-matrix-section > summary {
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+	padding: 6px 36px 6px 10px;
+	cursor: pointer;
+	background: var(--form-matrix-heading-bg);
+	font-weight: bold;
+}
+
+/* Centred (it is 18px high); Unfold turns it when the section is open. */
+.form-matrix-section > summary::after {
+	top: calc(50% - 9px);
+}
+
+.form-matrix-section[open] > summary {
+	margin-bottom: 0;
+}
+
+.form-matrix-count {
+	font-weight: normal;
+	color: var(--form-matrix-quiet);
+}
+
+/* Fixed layout with the same widths in every section: the columns line up. */
+.form-matrix-section table {
+	width: 100%;
+	border-collapse: collapse;
+	table-layout: fixed;
+}
+
+.form-matrix-row-column {
+	width: 26%;
+}
+
+.form-matrix-column {
+	width: 11%;
+}
+
+.form-matrix-section th,
+.form-matrix-section td {
+	padding: 4px 8px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.form-matrix-section thead th {
+	vertical-align: bottom;
+}
+
+.form-matrix-section input[type="checkbox"] {
+	margin: 0;
+}
+
+.form-matrix-section label {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 0;
+	font-size: inherit;
+	white-space: nowrap;
+}
+
+.form-matrix-section th[scope="row"] label,
+.form-matrix-section thead th:first-child label {
+	white-space: normal;
+}
+
+/* The cells that are not checkboxes take their column. */
+.form-matrix-section td input:not([type="checkbox"]),
+.form-matrix-section td select {
+	box-sizing: border-box;
+	width: 100%;
+	min-width: 0;
+}
+
+/*
+ * The checkbox of a column above its name, over the checkboxes of the column
+ * (on the left for "Others", whose checkboxes are listed from the left).
+ */
+.form-matrix-section thead th:not(:first-child) label {
+	flex-direction: column-reverse;
+	gap: 4px;
+}
+
+.form-matrix-section th[scope="row"],
+.form-matrix-section thead th:first-child,
+.form-matrix-section .form-matrix-others {
+	text-align: left;
+}
+
+.form-matrix-section thead th.form-matrix-others label {
+	align-items: flex-start;
+}
+
+/*
+ * The extra checkboxes of a row, one under the other and wrapping inside
+ * their column, not past the matrix; their checkbox next to their first line.
+ */
+td.form-matrix-others label {
+	display: flex;
+	align-items: flex-start;
+	white-space: normal;
+	text-align: left;
+}
+
+td.form-matrix-others label + label {
+	margin-top: 4px;
+}
+
+td.form-matrix-others input[type="checkbox"] {
+	flex: none;
+	margin-top: 2px;
+}
+
+.form-matrix-missing {
+	color: var(--form-matrix-quiet);
+}
+
+.form-matrix-placeholder {
+	visibility: hidden;
+}

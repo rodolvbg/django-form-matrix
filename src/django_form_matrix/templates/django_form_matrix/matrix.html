@@ -1,0 +1,68 @@
+{% load i18n %}
+<div class="form-matrix"{% if widget.attrs.id %} id="{{ widget.attrs.id }}"{% endif %}>
+  {% for section in widget.sections %}
+    {% if section.name %}
+      <details class="form-matrix-section"{% if section.is_open %} open{% endif %}>
+        <summary>
+          <span class="form-matrix-section-name">{{ section.name }}</span>
+          {% if section.total %}
+            <span class="form-matrix-count" data-form-matrix-count>{{ section.checked }}/{{ section.total }}</span>
+          {% endif %}
+        </summary>
+    {% else %}
+      <div class="form-matrix-section">
+    {% endif %}
+    <table>
+      {# Same column widths in every section, so the columns line up. #}
+      <colgroup>
+        <col class="form-matrix-row-column">
+        {% for column in widget.columns %}<col class="form-matrix-column">{% endfor %}
+      </colgroup>
+      <thead>
+        <tr>
+          <th scope="col">
+            {% if section.has_checkboxes and not widget.disabled %}
+              <label><input type="checkbox" data-form-matrix-toggle="section"> {% translate "All" %}</label>
+            {% endif %}
+          </th>
+          {% for column in widget.columns %}
+            <th scope="col">
+              {% if column.is_checkbox and not widget.disabled %}
+                <label><input type="checkbox" data-form-matrix-toggle="column" data-column="{{ forloop.counter0 }}"> {{ column.label }}</label>
+              {% else %}
+                {{ column.label }}
+              {% endif %}
+            </th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in section.rows %}
+          <tr>
+            <th scope="row">
+              {% if row.has_checkboxes and not widget.disabled %}
+                <label><input type="checkbox" data-form-matrix-toggle="row"> {{ row.label }}</label>
+              {% else %}
+                {{ row.label }}
+              {% endif %}
+            </th>
+            {% for cell in row.cells %}
+              <td data-column="{{ forloop.counter0 }}">
+                {% if cell.html %}
+                  {{ cell.html }}
+                {% else %}
+                  <span class="form-matrix-missing" aria-hidden="true">—</span>
+                {% endif %}
+              </td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% if section.name %}
+      </details>
+    {% else %}
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
