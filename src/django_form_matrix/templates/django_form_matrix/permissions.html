@@ -67,7 +67,7 @@
                       <input type="checkbox" name="{{ widget.name }}" value="{{ option.value }}" id="{{ option.id }}" title="{{ option.label }}" aria-label="{{ row.model }}: {{ option.label }}"{% if option.checked %} checked{% endif %}{% if widget.disabled %} disabled{% endif %}>
                     {% endblock permission %}
                   {% else %}
-                    {% block missing_cell %}<span class="form-matrix-missing" aria-hidden="true">—</span>{% endblock missing_cell %}
+                    {% block missing_cell %}<span class="form-matrix-missing" aria-hidden="true">—</span>{% endblock %}
                   {% endif %}
                 </td>
               {% endfor %}
@@ -84,6 +84,6 @@
       </table>
     </details>
   {% empty %}
-    {% block empty %}<p>{% translate "No permissions available." %}</p>{% endblock empty %}
+    {% block empty %}<p>{% translate "No permissions available." %}</p>{% endblock %}
   {% endfor %}
 </div>

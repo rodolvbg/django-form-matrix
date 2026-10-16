@@ -57,9 +57,9 @@
             {% for cell in row.cells %}
               <td data-column="{{ forloop.counter0 }}">
                 {% if cell.html %}
-                  {% block cell %}{{ cell.html }}{% endblock cell %}
+                  {% block cell %}{{ cell.html }}{% endblock %}
                 {% else %}
-                  {% block missing_cell %}<span class="form-matrix-missing" aria-hidden="true">—</span>{% endblock missing_cell %}
+                  {% block missing_cell %}<span class="form-matrix-missing" aria-hidden="true">—</span>{% endblock %}
                 {% endif %}
               </td>
             {% endfor %}
@@ -73,6 +73,6 @@
       </div>
     {% endif %}
   {% empty %}
-    {% block empty %}{% endblock empty %}
+    {% block empty %}{% endblock %}
   {% endfor %}
 </div>

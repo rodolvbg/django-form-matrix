@@ -1,8 +1,13 @@
+import pytest
 from demo.models import Plan
 from django.contrib import admin
-from unfold.admin import ModelAdmin
 
-from django_form_matrix.contrib.unfold import UnfoldMatrixMixin
+# The tox environments without django-unfold skip it (see "-unfold" ones).
+pytest.importorskip("unfold")
+
+from unfold.admin import ModelAdmin  # noqa: E402
+
+from django_form_matrix.contrib.unfold import UnfoldMatrixMixin  # noqa: E402
 
 
 def test_the_mixin_adds_the_unfold_palette():

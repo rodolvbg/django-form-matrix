@@ -31,85 +31,85 @@ const MATRIX = `
 	</details>`;
 
 beforeAll(async () => {
-	document.body.innerHTML = MATRIX;
-	await import(
-		"../../src/django_form_matrix/static/django_form_matrix/js/matrix.js"
-	);
+    document.body.innerHTML = MATRIX;
+    await import(
+        "../../src/django_form_matrix/static/django_form_matrix/js/matrix.js"
+    );
 });
 
 const $ = (selector) => document.querySelector(selector);
 const checked = () =>
-	[...document.querySelectorAll("input[name=p]:checked")].map((i) => i.value);
+    [...document.querySelectorAll("input[name=p]:checked")].map((i) => i.value);
 
 function toggle(selector) {
-	const input = $(selector);
-	input.checked = !input.checked;
-	input.dispatchEvent(new Event("change", { bubbles: true }));
+    const input = $(selector);
+    input.checked = !input.checked;
+    input.dispatchEvent(new Event("change", { bubbles: true }));
 }
 
 describe("initial state", () => {
-	it("shows partial rows, columns and the count", () => {
-		expect($("#row-invoice").indeterminate).toBe(true);
-		expect($("#col-view").indeterminate).toBe(true);
-		expect($("#section").indeterminate).toBe(true);
-		expect($("#col-delete").disabled).toBe(true);
-		expect($("[data-form-matrix-count]").textContent).toBe("1/5");
-	});
+    it("shows partial rows, columns and the count", () => {
+        expect($("#row-invoice").indeterminate).toBe(true);
+        expect($("#col-view").indeterminate).toBe(true);
+        expect($("#section").indeterminate).toBe(true);
+        expect($("#col-delete").disabled).toBe(true);
+        expect($("[data-form-matrix-count]").textContent).toBe("1/5");
+    });
 });
 
 describe("shortcuts", () => {
-	beforeEach(() => {
-		document.body.innerHTML = MATRIX;
-		document.dispatchEvent(new Event("DOMContentLoaded"));
-	});
+    beforeEach(() => {
+        document.body.innerHTML = MATRIX;
+        document.dispatchEvent(new Event("DOMContentLoaded"));
+    });
 
-	it("a row checks every checkbox of the row", () => {
-		toggle("#row-invoice");
-		expect(checked()).toEqual(["1", "2", "3"]);
-		expect($("#row-invoice").checked).toBe(true);
-		expect($("[data-form-matrix-count]").textContent).toBe("3/5");
-		toggle("#row-invoice");
-		expect(checked()).toEqual([]);
-	});
+    it("a row checks every checkbox of the row", () => {
+        toggle("#row-invoice");
+        expect(checked()).toEqual(["1", "2", "3"]);
+        expect($("#row-invoice").checked).toBe(true);
+        expect($("[data-form-matrix-count]").textContent).toBe("3/5");
+        toggle("#row-invoice");
+        expect(checked()).toEqual([]);
+    });
 
-	it("a column checks that column in every row", () => {
-		toggle("#col-add");
-		expect(checked()).toEqual(["1", "2", "4"]);
-		expect($("#col-add").checked).toBe(true);
-	});
+    it("a column checks that column in every row", () => {
+        toggle("#col-add");
+        expect(checked()).toEqual(["1", "2", "4"]);
+        expect($("#col-add").checked).toBe(true);
+    });
 
-	it("any column key works, not only the ones of permissions", () => {
-		toggle("#col-others");
-		expect(checked()).toEqual(["2", "3"]);
-		expect($("#col-others").checked).toBe(true);
-	});
+    it("any column key works, not only the ones of permissions", () => {
+        toggle("#col-others");
+        expect(checked()).toEqual(["2", "3"]);
+        expect($("#col-others").checked).toBe(true);
+    });
 
-	it("the section checks everything", () => {
-		toggle("#section");
-		expect(checked()).toEqual(["1", "2", "3", "4", "5"]);
-		expect($("#row-series").checked).toBe(true);
-		expect($("#section").indeterminate).toBe(false);
-	});
+    it("the section checks everything", () => {
+        toggle("#section");
+        expect(checked()).toEqual(["1", "2", "3", "4", "5"]);
+        expect($("#row-series").checked).toBe(true);
+        expect($("#section").indeterminate).toBe(false);
+    });
 
-	it("single checkboxes update the shortcuts", () => {
-		toggle("input[value='4']");
-		toggle("input[value='5']");
-		expect($("#row-series").checked).toBe(true);
-		expect($("[data-form-matrix-count]").textContent).toBe("3/5");
-	});
+    it("single checkboxes update the shortcuts", () => {
+        toggle("input[value='4']");
+        toggle("input[value='5']");
+        expect($("#row-series").checked).toBe(true);
+        expect($("[data-form-matrix-count]").textContent).toBe("3/5");
+    });
 
-	it("ignores changes outside the matrix", () => {
-		document.body.insertAdjacentHTML(
-			"beforeend",
-			'<input type="checkbox" id="x">',
-		);
-		toggle("#x");
-		expect(checked()).toEqual(["2"]);
-	});
+    it("ignores changes outside the matrix", () => {
+        document.body.insertAdjacentHTML(
+            "beforeend",
+            '<input type="checkbox" id="x">',
+        );
+        toggle("#x");
+        expect(checked()).toEqual(["2"]);
+    });
 
-	it("works in a section without count", () => {
-		$("[data-form-matrix-count]").remove();
-		toggle("#row-series");
-		expect(checked()).toEqual(["2", "4", "5"]);
-	});
+    it("works in a section without count", () => {
+        $("[data-form-matrix-count]").remove();
+        toggle("#row-series");
+        expect(checked()).toEqual(["2", "4", "5"]);
+    });
 });

@@ -18,3 +18,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `column_heading`, `cell`...) to extend them changing only a piece.
 - `django_form_matrix.contrib.unfold.UnfoldMatrixMixin`: the matrix on
   django-unfold's palette (light and dark).
+- Spanish translation.

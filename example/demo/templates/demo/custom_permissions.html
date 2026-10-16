@@ -1,4 +1,7 @@
 {% extends "django_form_matrix/permissions.html" %}
+
 {% block section_summary %}<strong class="demo-title">{{ app.name }}</strong>{% endblock %}
+
 {% block other_permission %}<span class="demo-other">{{ block.super }}</span>{% endblock %}
+
 {% block empty %}<p class="demo-empty">No permissions.</p>{% endblock %}

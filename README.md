@@ -154,6 +154,12 @@ And in Unfold's dark mode:
 
 ![The matrix in Unfold, dark](docs/screenshots/unfold-dark.png)
 
+## Translations
+
+Ships a Spanish (`es`) translation: the matrix's headings ("Add", "View",
+"Change", "Delete", "Others"), the permissions' names ("Can view plan") and
+its messages follow the active language, like the rest of the admin.
+
 ## Development
 
 ```bash

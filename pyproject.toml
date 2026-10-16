@@ -5,7 +5,10 @@ requires = [ "hatch-fancy-pypi-readme", "hatchling" ]
 [project]
 name = "django-form-matrix"
 version = "0.1.0"
-description = "A form field to fill a table of rows and columns, with a form field in every cell (checkboxes, numbers, choices...), plus a ready-made permission matrix."
+description = """\
+  A form field to fill a table of rows and columns, with a form field in every cell (checkboxes, numbers, choices...), \
+  plus a ready-made permission matrix.\
+  """
 keywords = [ "admin", "checkbox", "django", "form", "grid", "matrix", "permissions", "widget" ]
 license = "MIT"
 license-files = [ "LICENSE" ]
@@ -110,10 +113,7 @@ python_version = "3.10"
 warn_redundant_casts = true
 warn_unused_ignores = true
 plugins = [ "mypy_django_plugin.main" ]
-
-[[tool.mypy.overrides]]
-module = "unfold.*"
-ignore_missing_imports = true
+overrides = [ { module = "unfold.*", ignore_missing_imports = true } ]
 
 [tool.django-stubs]
 django_settings_module = "example.settings"
@@ -133,15 +133,18 @@ report.skip_covered = true
 [tool.tox]
 env_list = [
   "py314-dj52",
+  "py314-dj52-unfold",
   "py313-dj51",
   "py312-dj42",
+  "py312-dj42-unfold",
   "py312-dj50",
   "py310-dj42",
   "py310-dj50",
   "py310-dj51",
   "py310-dj52",
 ]
-env_run_base.commands = [ [ "pytest", "tests", "--ignore=tests/e2e", "{posargs}" ] ]
+# --no-cov: the environments run in parallel, and would share one .coverage.
+env_run_base.commands = [ [ "pytest", "tests", "--ignore=tests/e2e", "--no-cov", "{posargs}" ] ]
 env_run_base.deps = [
   "pytest",
   "pytest-django",
@@ -150,6 +153,7 @@ env_run_base.deps = [
   { replace = "if", condition = "factor.dj50", then = [ "django>=5.0,<5.1" ], extend = true },
   { replace = "if", condition = "factor.dj51", then = [ "django>=5.1,<5.2" ], extend = true },
   { replace = "if", condition = "factor.dj52", then = [ "django>=5.2,<5.3" ], extend = true },
+  { replace = "if", condition = "factor.unfold", then = [ "django-unfold>=0.60" ], extend = true },
 ]
 env_run_base.package = "wheel"
 env_run_base.wheel_build_env = ".pkg"

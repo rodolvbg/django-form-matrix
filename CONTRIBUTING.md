@@ -94,3 +94,20 @@ django-stubs to resolve model types), not an isolated pre-commit env.
 - [ ] `uv run pytest`
 - [ ] `npm test`
 - [ ] `uv run pre-commit run --all-files`
+
+## Translations
+
+Catalogs live in `src/django_form_matrix/locale/`. After changing
+translatable text, from that package directory:
+
+```bash
+cd src/django_form_matrix
+DJANGO_SETTINGS_MODULE=tests.settings PYTHONPATH=../..:../../example \
+  uv run django-admin makemessages -l es --no-obsolete --add-location file --no-wrap
+# translate the new/changed entries in locale/es/LC_MESSAGES/django.po, then:
+DJANGO_SETTINGS_MODULE=tests.settings PYTHONPATH=../..:../../example \
+  uv run django-admin compilemessages
+```
+
+Commit both the `.po` and the compiled `.mo`. `tests/test_i18n.py` fails if
+an entry is untranslated or fuzzy, or if the `.mo` doesn't match the `.po`.
