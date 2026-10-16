@@ -10,6 +10,8 @@ A Django form field to fill a **table**: one row per item, one column per proper
 
 It works in any Django form and in the admin. A ready-made **permission matrix** (apps → models → add/view/change/delete) is included as a use case.
 
+![A matrix with checkboxes, numbers and choices in its cells, in two sections](docs/screenshots/hero.png)
+
 ## Installation
 
 ```bash
@@ -80,6 +82,8 @@ class RoleAdmin(admin.ModelAdmin):
             kwargs["form_class"] = PermissionMultipleChoiceField
         return super().formfield_for_manytomany(db_field, request, **kwargs)
 ```
+
+![The permission matrix in the admin](docs/screenshots/permissions.png)
 
 One section per app, one row per model and a column per action; the other permissions of a model go in an "Others" column. It submits like a `CheckboxSelectMultiple`, so validation and saving do not change, and the names of the permissions are shown translated. Needs `django.contrib.auth`.
 
