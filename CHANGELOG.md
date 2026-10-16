@@ -14,3 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   shortcuts to check a row, a column or a section.
 - `django_form_matrix.contrib.permissions`: `PermissionMultipleChoiceField`,
   the permissions of an app/model/action in a matrix.
+- Blocks in `matrix.html` and `permissions.html` (`section_summary`,
+  `column_heading`, `cell`...) to extend them changing only a piece.
+- `django_form_matrix.contrib.unfold.UnfoldMatrixMixin`: the matrix on
+  django-unfold's palette (light and dark).

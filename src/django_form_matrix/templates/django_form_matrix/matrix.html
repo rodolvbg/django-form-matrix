@@ -4,10 +4,12 @@
     {% if section.name %}
       <details class="form-matrix-section"{% if section.is_open %} open{% endif %}>
         <summary>
-          <span class="form-matrix-section-name">{{ section.name }}</span>
-          {% if section.total %}
-            <span class="form-matrix-count" data-form-matrix-count>{{ section.checked }}/{{ section.total }}</span>
-          {% endif %}
+          {% block section_summary %}
+            <span class="form-matrix-section-name">{{ section.name }}</span>
+            {% if section.total %}
+              <span class="form-matrix-count" data-form-matrix-count>{{ section.checked }}/{{ section.total }}</span>
+            {% endif %}
+          {% endblock section_summary %}
         </summary>
     {% else %}
       <div class="form-matrix-section">
@@ -21,17 +23,21 @@
       <thead>
         <tr>
           <th scope="col">
-            {% if section.has_checkboxes and not widget.disabled %}
-              <label><input type="checkbox" data-form-matrix-toggle="section"> {% translate "All" %}</label>
-            {% endif %}
+            {% block section_toggle %}
+              {% if section.has_checkboxes and not widget.disabled %}
+                <label><input type="checkbox" data-form-matrix-toggle="section"> {% translate "All" %}</label>
+              {% endif %}
+            {% endblock section_toggle %}
           </th>
           {% for column in widget.columns %}
             <th scope="col">
-              {% if column.is_checkbox and not widget.disabled %}
-                <label><input type="checkbox" data-form-matrix-toggle="column" data-column="{{ forloop.counter0 }}"> {{ column.label }}</label>
-              {% else %}
-                {{ column.label }}
-              {% endif %}
+              {% block column_heading %}
+                {% if column.is_checkbox and not widget.disabled %}
+                  <label><input type="checkbox" data-form-matrix-toggle="column" data-column="{{ forloop.counter0 }}"> {{ column.label }}</label>
+                {% else %}
+                  {{ column.label }}
+                {% endif %}
+              {% endblock column_heading %}
             </th>
           {% endfor %}
         </tr>
@@ -40,18 +46,20 @@
         {% for row in section.rows %}
           <tr>
             <th scope="row">
-              {% if row.has_checkboxes and not widget.disabled %}
-                <label><input type="checkbox" data-form-matrix-toggle="row"> {{ row.label }}</label>
-              {% else %}
-                {{ row.label }}
-              {% endif %}
+              {% block row_heading %}
+                {% if row.has_checkboxes and not widget.disabled %}
+                  <label><input type="checkbox" data-form-matrix-toggle="row"> {{ row.label }}</label>
+                {% else %}
+                  {{ row.label }}
+                {% endif %}
+              {% endblock row_heading %}
             </th>
             {% for cell in row.cells %}
               <td data-column="{{ forloop.counter0 }}">
                 {% if cell.html %}
-                  {{ cell.html }}
+                  {% block cell %}{{ cell.html }}{% endblock cell %}
                 {% else %}
-                  <span class="form-matrix-missing" aria-hidden="true">—</span>
+                  {% block missing_cell %}<span class="form-matrix-missing" aria-hidden="true">—</span>{% endblock missing_cell %}
                 {% endif %}
               </td>
             {% endfor %}
@@ -64,5 +72,7 @@
     {% else %}
       </div>
     {% endif %}
+  {% empty %}
+    {% block empty %}{% endblock empty %}
   {% endfor %}
 </div>

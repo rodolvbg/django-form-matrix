@@ -36,6 +36,7 @@ dependencies = [ "django>=4.2" ]
 optional-dependencies.dev = [
   "coverage[toml]>=7.4",
   "django-stubs[compatible-mypy]>=5",
+  "django-unfold>=0.60",
   "mypy>=1.10",
   "pre-commit>=4",
   "pytest>=8",
@@ -54,6 +55,7 @@ urls.Repository = "https://github.com/rodolvbg/django-form-matrix"
 dev = [
   "coverage[toml]>=7.4",
   "django-stubs[compatible-mypy]>=5",
+  "django-unfold>=0.60",
   "mypy>=1.10",
   "pre-commit>=4",
   "pytest>=8",
@@ -108,6 +110,10 @@ python_version = "3.10"
 warn_redundant_casts = true
 warn_unused_ignores = true
 plugins = [ "mypy_django_plugin.main" ]
+
+[[tool.mypy.overrides]]
+module = "unfold.*"
+ignore_missing_imports = true
 
 [tool.django-stubs]
 django_settings_module = "example.settings"

@@ -3,8 +3,10 @@
   {% for app in widget.apps %}
     <details class="form-matrix-section"{% if app.checked %} open{% endif %}>
       <summary>
-        <span class="form-matrix-section-name">{{ app.name }}</span>
-        <span class="form-matrix-count" data-form-matrix-count>{{ app.checked }}/{{ app.total }}</span>
+        {% block section_summary %}
+          <span class="form-matrix-section-name">{{ app.name }}</span>
+          <span class="form-matrix-count" data-form-matrix-count>{{ app.checked }}/{{ app.total }}</span>
+        {% endblock section_summary %}
       </summary>
       <table>
         {# Same column widths in every app, so the columns line up. #}
@@ -16,29 +18,35 @@
         <thead>
           <tr>
             <th scope="col">
-              {% if not widget.disabled %}
-                <label><input type="checkbox" data-form-matrix-toggle="section"> {% translate "All" %}</label>
-              {% endif %}
+              {% block section_toggle %}
+                {% if not widget.disabled %}
+                  <label><input type="checkbox" data-form-matrix-toggle="section"> {% translate "All" %}</label>
+                {% endif %}
+              {% endblock section_toggle %}
             </th>
             {% for action, label in widget.columns %}
               <th scope="col">
-                {% if widget.disabled %}{{ label }}{% else %}
-                  <label><input type="checkbox" data-form-matrix-toggle="column" data-column="{{ action }}"> {{ label }}</label>
-                {% endif %}
+                {% block column_heading %}
+                  {% if widget.disabled %}{{ label }}{% else %}
+                    <label><input type="checkbox" data-form-matrix-toggle="column" data-column="{{ action }}"> {{ label }}</label>
+                  {% endif %}
+                {% endblock column_heading %}
               </th>
             {% endfor %}
             <th scope="col" class="form-matrix-others">
-              {% if widget.disabled %}{% translate "Others" %}{% else %}
-                <label>
-                  {% if app.has_others %}
-                    <input type="checkbox" data-form-matrix-toggle="column" data-column="others">
-                  {% else %}
-                    {# Room of the checkbox, so the heading lines up with the others. #}
-                    <input type="checkbox" class="form-matrix-placeholder" tabindex="-1" aria-hidden="true" disabled>
-                  {% endif %}
-                  {% translate "Others" %}
-                </label>
-              {% endif %}
+              {% block others_heading %}
+                {% if widget.disabled %}{% translate "Others" %}{% else %}
+                  <label>
+                    {% if app.has_others %}
+                      <input type="checkbox" data-form-matrix-toggle="column" data-column="others">
+                    {% else %}
+                      {# Room of the checkbox, so the heading lines up with the others. #}
+                      <input type="checkbox" class="form-matrix-placeholder" tabindex="-1" aria-hidden="true" disabled>
+                    {% endif %}
+                    {% translate "Others" %}
+                  </label>
+                {% endif %}
+              {% endblock others_heading %}
             </th>
           </tr>
         </thead>
@@ -46,22 +54,28 @@
           {% for row in app.rows.values %}
             <tr>
               <th scope="row">
-                {% if widget.disabled %}{{ row.model }}{% else %}
-                  <label><input type="checkbox" data-form-matrix-toggle="row"> {{ row.model }}</label>
-                {% endif %}
+                {% block row_heading %}
+                  {% if widget.disabled %}{{ row.model }}{% else %}
+                    <label><input type="checkbox" data-form-matrix-toggle="row"> {{ row.model }}</label>
+                  {% endif %}
+                {% endblock row_heading %}
               </th>
               {% for action, option in row.columns %}
                 <td data-column="{{ action }}">
                   {% if option %}
-                    <input type="checkbox" name="{{ widget.name }}" value="{{ option.value }}" id="{{ option.id }}" title="{{ option.label }}" aria-label="{{ row.model }}: {{ option.label }}"{% if option.checked %} checked{% endif %}{% if widget.disabled %} disabled{% endif %}>
+                    {% block permission %}
+                      <input type="checkbox" name="{{ widget.name }}" value="{{ option.value }}" id="{{ option.id }}" title="{{ option.label }}" aria-label="{{ row.model }}: {{ option.label }}"{% if option.checked %} checked{% endif %}{% if widget.disabled %} disabled{% endif %}>
+                    {% endblock permission %}
                   {% else %}
-                    <span class="form-matrix-missing" aria-hidden="true">—</span>
+                    {% block missing_cell %}<span class="form-matrix-missing" aria-hidden="true">—</span>{% endblock missing_cell %}
                   {% endif %}
                 </td>
               {% endfor %}
               <td class="form-matrix-others" data-column="others">
                 {% for option in row.others %}
-                  <label><input type="checkbox" name="{{ widget.name }}" value="{{ option.value }}" id="{{ option.id }}"{% if option.checked %} checked{% endif %}{% if widget.disabled %} disabled{% endif %}> {{ option.label }}</label>
+                  {% block other_permission %}
+                    <label><input type="checkbox" name="{{ widget.name }}" value="{{ option.value }}" id="{{ option.id }}"{% if option.checked %} checked{% endif %}{% if widget.disabled %} disabled{% endif %}> {{ option.label }}</label>
+                  {% endblock other_permission %}
                 {% endfor %}
               </td>
             </tr>
@@ -70,6 +84,6 @@
       </table>
     </details>
   {% empty %}
-    <p>{% translate "No permissions available." %}</p>
+    {% block empty %}<p>{% translate "No permissions available." %}</p>{% endblock empty %}
   {% endfor %}
 </div>

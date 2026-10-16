@@ -303,6 +303,9 @@ dev = [
     { name = "coverage", extra = ["toml"] },
     { name = "django-stubs", version = "6.0.9", source = { registry = "https://pypi.org/simple" }, extra = ["compatible-mypy"], marker = "python_full_version < '3.11'" },
     { name = "django-stubs", version = "6.1.2", source = { registry = "https://pypi.org/simple" }, extra = ["compatible-mypy"], marker = "python_full_version >= '3.11'" },
+    { name = "django-unfold", version = "0.81.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "django-unfold", version = "0.91.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "django-unfold", version = "0.110.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "mypy", version = "2.3.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "mypy", version = "2.4.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "pre-commit", version = "4.6.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
@@ -323,6 +326,9 @@ dev = [
     { name = "coverage", extra = ["toml"] },
     { name = "django-stubs", version = "6.0.9", source = { registry = "https://pypi.org/simple" }, extra = ["compatible-mypy"], marker = "python_full_version < '3.11'" },
     { name = "django-stubs", version = "6.1.2", source = { registry = "https://pypi.org/simple" }, extra = ["compatible-mypy"], marker = "python_full_version >= '3.11'" },
+    { name = "django-unfold", version = "0.81.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "django-unfold", version = "0.91.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "django-unfold", version = "0.110.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
     { name = "mypy", version = "2.3.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "mypy", version = "2.4.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "pre-commit", version = "4.6.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
@@ -343,6 +349,7 @@ requires-dist = [
     { name = "coverage", extras = ["toml"], marker = "extra == 'dev'", specifier = ">=7.4" },
     { name = "django", specifier = ">=4.2" },
     { name = "django-stubs", extras = ["compatible-mypy"], marker = "extra == 'dev'", specifier = ">=5" },
+    { name = "django-unfold", marker = "extra == 'dev'", specifier = ">=0.60" },
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.10" },
     { name = "pre-commit", marker = "extra == 'dev'", specifier = ">=4" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8" },
@@ -359,6 +366,7 @@ provides-extras = ["dev"]
 dev = [
     { name = "coverage", extras = ["toml"], specifier = ">=7.4" },
     { name = "django-stubs", extras = ["compatible-mypy"], specifier = ">=5" },
+    { name = "django-unfold", specifier = ">=0.60" },
     { name = "mypy", specifier = ">=1.10" },
     { name = "pre-commit", specifier = ">=4" },
     { name = "pytest", specifier = ">=8" },
@@ -453,6 +461,52 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/d9/62/de532d58736d671b9ac0c0467909a9429758ae579d636e868ce74519566b/django_stubs_ext-6.1.2.tar.gz", hash = "sha256:2142da7fffbbe897ccecf9b4c97e09ea1a2e9291760b0a824b4c402b375ce6f9", size = 7221, upload-time = "2026-10-05T06:46:43.717Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/21/bb/393c3c1e24aaf37d62918ea50f3ea22e30d5f3162fc62f4c3bf3275e5ed3/django_stubs_ext-6.1.2-py3-none-any.whl", hash = "sha256:7334e687ab6dc78a6c3da90ab1ccb0e412efd827ea11de8d3f85adbad948abb1", size = 10850, upload-time = "2026-10-05T06:46:42.647Z" },
+]
+
+[[package]]
+name = "django-unfold"
+version = "0.81.0"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version < '3.11'",
+]
+dependencies = [
+    { name = "django", version = "5.2.18", source = { registry = "https://pypi.org/simple" } },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/42/96/54e3852a562fb5da3a626ae7992f2427945cadf7d45325b8dff42c418a3d/django_unfold-0.81.0.tar.gz", hash = "sha256:4746a2e78210d174c556b8dcf6cbc87642b86282a37406d820d6c1b4f6c160be", size = 1111379, upload-time = "2026-02-25T09:48:42.197Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/63/03/f3b11452636bcb8f8fb4b2daa3301781eca7ea1b2ee5781fdc888e315b43/django_unfold-0.81.0-py3-none-any.whl", hash = "sha256:7a800fcf7ac438ae473ffa51cdfbb22ef0e6e8455dad84ce1e1846ddd21deac9", size = 1226399, upload-time = "2026-02-25T09:48:40.646Z" },
+]
+
+[[package]]
+name = "django-unfold"
+version = "0.91.0"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version == '3.11.*'",
+]
+dependencies = [
+    { name = "django", version = "5.2.18", source = { registry = "https://pypi.org/simple" } },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/a4/cd/a2fdc41f2eed90242338982e2afadccdab4db7043a829b41a9ec54baaa35/django_unfold-0.91.0.tar.gz", hash = "sha256:98543cf149f9b363ad83c77747ff7e9e89323324b10e6afa4d3a672cb0c4f86d", size = 1121543, upload-time = "2026-04-27T13:25:30.417Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/cb/e8/2591119368628867284550ee5c337bae1f4b4c0e5a8a59f231899326a26f/django_unfold-0.91.0-py3-none-any.whl", hash = "sha256:486a468ec4788e0668a9e73686796b04450709171af4ac213b6d229a8015676a", size = 1245169, upload-time = "2026-04-27T13:25:31.765Z" },
+]
+
+[[package]]
+name = "django-unfold"
+version = "0.110.0"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.15'",
+    "python_full_version >= '3.12' and python_full_version < '3.15'",
+]
+dependencies = [
+    { name = "django", version = "6.1.2", source = { registry = "https://pypi.org/simple" } },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/44/45/8fed87cc80291ab694c46fa3c113dff3e25cc7b1de843f5c334679f9128d/django_unfold-0.110.0.tar.gz", hash = "sha256:cd0bbfd3b96454b6e6eccea98996f9de634e1aa08956807943011b12f2fbcdf2", size = 1172280, upload-time = "2026-10-13T06:47:18.085Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/2b/d1/d9f998dcd02fbdcc5a63836ac3025e170f3a99cfdc0b64efe7a4ab1e861c/django_unfold-0.110.0-py3-none-any.whl", hash = "sha256:5b20e87cf389376398dee19f9e168ad1f8c4cd5e53850b4b7d38bb1e17c14f9a", size = 1301431, upload-time = "2026-10-13T06:47:16.414Z" },
 ]
 
 [[package]]

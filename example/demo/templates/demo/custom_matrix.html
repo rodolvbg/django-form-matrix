@@ -1,0 +1,5 @@
+{% extends "django_form_matrix/matrix.html" %}
+{% comment %}Changes three pieces of the matrix and keeps the rest.{% endcomment %}
+{% block section_summary %}<strong class="demo-title">{{ section.name }}</strong>{% endblock %}
+{% block cell %}<span class="demo-cell">{{ cell.html }}</span>{% endblock %}
+{% block empty %}<p class="demo-empty">Nothing to fill.</p>{% endblock %}
