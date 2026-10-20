@@ -86,8 +86,8 @@ class TestMatrixField:
         matrix = field()
         matrix.rows = [Row("z", "Zeta")]
         matrix.columns = [Column("on", "On")]
-        assert matrix.widget.rows == matrix.rows  # type: ignore[attr-defined]
-        assert matrix.widget.columns == matrix.columns  # type: ignore[attr-defined]
+        assert matrix.widget.rows == matrix.rows
+        assert matrix.widget.columns == matrix.columns
         assert matrix.clean({"z": {"on": True}}) == {"z": {"on": True}}
 
     def test_has_changed_compares_cell_by_cell(self):
