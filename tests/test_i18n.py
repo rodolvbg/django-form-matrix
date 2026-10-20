@@ -7,6 +7,7 @@ from typing import Any
 import pytest
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
+from django.test import TestCase
 from django.utils import translation
 
 from django_form_matrix.contrib.permissions import (
@@ -68,10 +69,10 @@ def mo_messages(path):
     return {key: value for key, value in catalog.items() if key != ""}
 
 
+@pytest.mark.parametrize("catalog", CATALOGS, ids=lambda c: c.parent.parent.name)
 class TestCatalogs:
     """The shipped Spanish catalog."""
 
-    @pytest.mark.parametrize("catalog", CATALOGS, ids=lambda c: c.parent.parent.name)
     def test_every_message_is_translated(self, catalog):
         problems = [
             msgid
@@ -80,7 +81,6 @@ class TestCatalogs:
         ]
         assert problems == []
 
-    @pytest.mark.parametrize("catalog", CATALOGS, ids=lambda c: c.parent.parent.name)
     def test_compiled_catalog_is_up_to_date(self, catalog):
         """The shipped .mo has exactly the .po's translations (not compared by
         date: a git checkout gives both files arbitrary modification times)."""
@@ -90,10 +90,9 @@ class TestCatalogs:
         assert mo_messages(compiled) == po_messages(catalog)
 
 
-class TestSpanishRendering:
+class TestSpanishRendering(TestCase):
     """Rendering the permission widgets in Spanish."""
 
-    @pytest.mark.django_db
     def test_permission_names_in_spanish(self):
         view = Permission.objects.get(
             content_type__app_label="demo", codename="view_plan"
@@ -101,7 +100,6 @@ class TestSpanishRendering:
         with translation.override("es"):
             assert permission_label(view) == "Demo | Plan | Puede ver plan"
 
-    @pytest.mark.django_db
     def test_the_matrix_in_spanish(self):
         ct = ContentType.objects.get(app_label="demo", model="plan")
         Permission.objects.create(
@@ -118,7 +116,6 @@ class TestSpanishRendering:
         # The admin's own word for "All" (its catalog comes first).
         assert "> Todo</label>" in html
 
-    @pytest.mark.django_db
     def test_nothing_to_choose_in_spanish(self):
         field = PermissionMultipleChoiceField(queryset=Permission.objects.none())
         with translation.override("es"):

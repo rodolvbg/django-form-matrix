@@ -1,16 +1,14 @@
 from typing import Any
 
-import pytest
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
+from django.test import TestCase
 from django.utils import translation
 
 from django_form_matrix.contrib.permissions import (
     PermissionMultipleChoiceField,
     permission_label,
 )
-
-pytestmark = pytest.mark.django_db
 
 
 def permission(app_label, codename):
@@ -22,7 +20,7 @@ def context(queryset, value=()):
     return widget.get_context("permissions", list(value), {"id": "id_p"})["widget"]
 
 
-class TestPermissionLabel:
+class TestPermissionLabel(TestCase):
     """Naming permissions."""
 
     def test_default_permissions_are_named_from_the_model(self):
@@ -59,7 +57,7 @@ class TestPermissionLabel:
         assert field.label_from_instance(view) == permission_label(view)
 
 
-class TestPermissionMultipleChoiceField:
+class TestPermissionMultipleChoiceField(TestCase):
     """The permission matrix field and its widget."""
 
     def test_apps_models_and_actions(self):

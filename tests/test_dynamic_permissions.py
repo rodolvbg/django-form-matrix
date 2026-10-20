@@ -1,11 +1,9 @@
 import re
 
-import pytest
 from demo.dynamic_permissions import RolePermissionsForm
 from demo.models import Role
 from django.contrib.auth.models import Permission
-
-pytestmark = pytest.mark.django_db
+from django.test import TestCase
 
 
 def cell(model, action):
@@ -15,7 +13,7 @@ def cell(model, action):
     return f"permissions__{permission.content_type_id}__{action}"
 
 
-class TestRolePermissionsForm:
+class TestRolePermissionsForm(TestCase):
     """The role form: rows, saving and the admin hand-off."""
 
     def test_rows_come_from_the_models_with_their_actions(self):

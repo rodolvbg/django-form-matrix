@@ -1,7 +1,7 @@
 import re
 
-import pytest
 from django.contrib.auth.models import Permission
+from django.test import SimpleTestCase, TestCase
 
 from django_form_matrix import Column, MatrixField, MatrixWidget, Row
 from django_form_matrix.contrib.permissions import (
@@ -24,7 +24,7 @@ def matrix(rows):
     return field.widget
 
 
-class TestMatrixWidgetBlocks:
+class TestMatrixWidgetBlocks(SimpleTestCase):
     """Overriding blocks of the matrix template."""
 
     def test_a_template_can_change_one_block_and_keep_the_rest(self):
@@ -40,10 +40,9 @@ class TestMatrixWidgetBlocks:
         assert 'class="demo-empty"' in matrix([]).render("m", {})
 
 
-class TestPermissionWidgetBlocks:
+class TestPermissionWidgetBlocks(TestCase):
     """Overriding blocks of the permissions template."""
 
-    @pytest.mark.django_db
     def test_the_permission_template_has_blocks_too(self):
         field = PermissionMultipleChoiceField(
             queryset=Permission.objects.filter(codename="view_plan")
@@ -60,7 +59,6 @@ class TestPermissionWidgetBlocks:
         ).widget.choices
         assert 'class="demo-empty"' in nothing.render("p", [])
 
-    @pytest.mark.django_db
     def test_block_super_keeps_the_original_of_the_block(self):
         from django.contrib.contenttypes.models import ContentType
 

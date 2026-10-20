@@ -319,6 +319,7 @@ dev = [
     { name = "tox", version = "4.66.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "tox-uv", version = "1.36.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "tox-uv", version = "1.37.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "unittest-parametrize" },
 ]
 
 [package.dev-dependencies]
@@ -342,6 +343,7 @@ dev = [
     { name = "tox", version = "4.66.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
     { name = "tox-uv", version = "1.36.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "tox-uv", version = "1.37.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "unittest-parametrize" },
 ]
 
 [package.metadata]
@@ -359,6 +361,7 @@ requires-dist = [
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.6" },
     { name = "tox", marker = "extra == 'dev'", specifier = ">=4" },
     { name = "tox-uv", marker = "extra == 'dev'", specifier = ">=1" },
+    { name = "unittest-parametrize", marker = "extra == 'dev'", specifier = ">=1.9" },
 ]
 provides-extras = ["dev"]
 
@@ -376,6 +379,7 @@ dev = [
     { name = "ruff", specifier = ">=0.6" },
     { name = "tox", specifier = ">=4" },
     { name = "tox-uv", specifier = ">=1" },
+    { name = "unittest-parametrize", specifier = ">=1.9" },
 ]
 
 [[package]]
@@ -1543,6 +1547,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/d9/68/f1b440335057bfce71b6e50a9d09445aa2ecbd08359a337976627b8409e7/tzdata-2026.5.tar.gz", hash = "sha256:8cc73c0a0bfca7dbfa59235d60b2eff82231dee33f53d206db1acd9173cfc0a7", size = 200404, upload-time = "2026-10-03T09:23:14.143Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/94/21/1e5995a1c920cce14e4bffae20c665ec10e7ed03ab25e006cd741092b718/tzdata-2026.5-py2.py3-none-any.whl", hash = "sha256:b683bd1b6659ddcd810ff02ad09ba821d4bf1065072805063eb35c49617905ac", size = 347996, upload-time = "2026-10-03T09:23:12.535Z" },
+]
+
+[[package]]
+name = "unittest-parametrize"
+version = "1.9.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/d7/10/1cd6a2afc49aca2a67076844bd2d0ed75bd28400a539250694dbdcb6303d/unittest_parametrize-1.9.0.tar.gz", hash = "sha256:bc3b644539decbe309f4d0bea5a42b9c3b98610f800c315169ca541a48a6d2e8", size = 10521, upload-time = "2026-09-16T20:32:56.37Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/cc/40/a9437d31cf526a871f6c4545933785bae92624270ee0cf10d748ba6f59b3/unittest_parametrize-1.9.0-py3-none-any.whl", hash = "sha256:9c978e54972f88acda08350e875a69113eaead25b5f6e4bab2541572bb459d13", size = 10585, upload-time = "2026-09-16T20:32:54.984Z" },
 ]
 
 [[package]]

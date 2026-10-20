@@ -1,6 +1,7 @@
-import pytest
 from django import forms
 from django.core.exceptions import ValidationError
+from django.test import SimpleTestCase
+from unittest_parametrize import ParametrizedTestCase, parametrize
 
 from django_form_matrix import Column, MatrixField, Row
 
@@ -16,7 +17,7 @@ def field(**kwargs):
     )
 
 
-class TestMatrixField:
+class TestMatrixField(SimpleTestCase):
     """Cleaning, validating and comparing the matrix value."""
 
     def test_cleans_every_cell_with_its_own_field(self):
@@ -36,17 +37,17 @@ class TestMatrixField:
         }
 
     def test_a_failing_cell_names_its_row_and_column(self):
-        with pytest.raises(ValidationError) as caught:
+        with self.assertRaises(ValidationError) as caught:
             field().clean({"a": {"on": True, "limit": "-1"}})
-        [message] = caught.value.messages
+        [message] = caught.exception.messages
         assert message.startswith("Alpha, Limit: ")
         assert "greater than or equal to 0" in message
 
     def test_every_failing_cell_is_reported(self):
-        with pytest.raises(ValidationError) as caught:
+        with self.assertRaises(ValidationError) as caught:
             field().clean({"a": {"limit": "x"}})
-        assert len(caught.value.messages) == 1
-        with pytest.raises(ValidationError) as caught:
+        assert len(caught.exception.messages) == 1
+        with self.assertRaises(ValidationError) as caught:
             MatrixField(
                 rows=[Row("a", "A")],
                 columns=[
@@ -54,16 +55,16 @@ class TestMatrixField:
                     Column("y", "Y", forms.IntegerField()),
                 ],
             ).clean({})
-        assert len(caught.value.messages) == 2
+        assert len(caught.exception.messages) == 2
 
     def test_not_required_by_default(self):
         assert not field().required
 
     def test_required_asks_for_a_cell_with_a_value(self):
         required = field(required=True)
-        with pytest.raises(ValidationError) as caught:
+        with self.assertRaises(ValidationError) as caught:
             required.clean({"a": {"on": False}})
-        assert caught.value.code == "required"
+        assert caught.exception.code == "required"
         assert required.clean({"a": {"on": True}})["a"]["on"] is True
 
     def test_field_validators_run_on_the_value(self):
@@ -71,15 +72,15 @@ class TestMatrixField:
             if sum(cell["on"] for cell in value.values()) > 1:
                 raise ValidationError("one at most")
 
-        with pytest.raises(ValidationError, match="one at most"):
+        with self.assertRaisesRegex(ValidationError, "one at most"):
             field(validators=[at_most_one]).clean(
                 {"a": {"on": True}, "b": {"on": True}}
             )
 
     def test_keys_must_be_unique(self):
-        with pytest.raises(ValueError, match="rows"):
+        with self.assertRaisesRegex(ValueError, "rows"):
             MatrixField(rows=[Row("a", "A"), Row("a", "B")], columns=[])
-        with pytest.raises(ValueError, match="columns"):
+        with self.assertRaisesRegex(ValueError, "columns"):
             MatrixField(rows=[], columns=[Column("a", "A"), Column("a", "B")])
 
     def test_rows_and_columns_can_change_after_creating_the_field(self):
@@ -112,10 +113,10 @@ class TestMatrixField:
         assert MatrixForm(data={}, initial=initial).has_changed()
 
 
-class TestColumn:
+class TestColumn(ParametrizedTestCase, SimpleTestCase):
     """A column of the matrix."""
 
-    @pytest.mark.parametrize(
+    @parametrize(
         ("column", "is_checkbox"),
         [
             (Column("a", "A"), True),

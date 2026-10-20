@@ -1,4 +1,5 @@
 from django import forms
+from django.test import SimpleTestCase
 from django.utils.datastructures import MultiValueDict
 
 from django_form_matrix import Column, MatrixField, Row
@@ -19,7 +20,7 @@ def matrix(**kwargs):
     )
 
 
-class TestMatrixWidget:
+class TestMatrixWidget(SimpleTestCase):
     """Reading, building and rendering the matrix."""
 
     def test_cells_are_submitted_on_their_own(self):
