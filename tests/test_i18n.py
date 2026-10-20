@@ -68,51 +68,58 @@ def mo_messages(path):
     return {key: value for key, value in catalog.items() if key != ""}
 
 
-@pytest.mark.parametrize("catalog", CATALOGS, ids=lambda c: c.parent.parent.name)
-def test_every_message_is_translated(catalog):
-    problems = [
-        msgid
-        for msgid, msgstrs, fuzzy in po_entries(catalog)
-        if fuzzy or not all(s.strip() for s in msgstrs)
-    ]
-    assert problems == []
+class TestCatalogs:
+    """The shipped Spanish catalog."""
+
+    @pytest.mark.parametrize("catalog", CATALOGS, ids=lambda c: c.parent.parent.name)
+    def test_every_message_is_translated(self, catalog):
+        problems = [
+            msgid
+            for msgid, msgstrs, fuzzy in po_entries(catalog)
+            if fuzzy or not all(s.strip() for s in msgstrs)
+        ]
+        assert problems == []
+
+    @pytest.mark.parametrize("catalog", CATALOGS, ids=lambda c: c.parent.parent.name)
+    def test_compiled_catalog_is_up_to_date(self, catalog):
+        """The shipped .mo has exactly the .po's translations (not compared by
+        date: a git checkout gives both files arbitrary modification times)."""
+        compiled = catalog.with_suffix(".mo")
+
+        assert compiled.exists()
+        assert mo_messages(compiled) == po_messages(catalog)
 
 
-@pytest.mark.parametrize("catalog", CATALOGS, ids=lambda c: c.parent.parent.name)
-def test_compiled_catalog_is_up_to_date(catalog):
-    """The shipped .mo has exactly the .po's translations (not compared by
-    date: a git checkout gives both files arbitrary modification times)."""
-    compiled = catalog.with_suffix(".mo")
+class TestSpanishRendering:
+    """Rendering the permission widgets in Spanish."""
 
-    assert compiled.exists()
-    assert mo_messages(compiled) == po_messages(catalog)
+    @pytest.mark.django_db
+    def test_permission_names_in_spanish(self):
+        view = Permission.objects.get(
+            content_type__app_label="demo", codename="view_plan"
+        )
+        with translation.override("es"):
+            assert permission_label(view) == "Demo | Plan | Puede ver plan"
 
+    @pytest.mark.django_db
+    def test_the_matrix_in_spanish(self):
+        ct = ContentType.objects.get(app_label="demo", model="plan")
+        Permission.objects.create(
+            content_type=ct, codename="export_plan", name="Export"
+        )
+        field = PermissionMultipleChoiceField(
+            queryset=Permission.objects.filter(content_type=ct)
+        )
+        with translation.override("es"):
+            html = field.widget.render("p", [])
 
-@pytest.mark.django_db
-def test_permission_names_in_spanish():
-    view = Permission.objects.get(content_type__app_label="demo", codename="view_plan")
-    with translation.override("es"):
-        assert permission_label(view) == "Demo | Plan | Puede ver plan"
+        for heading in ("Añadir", "Ver", "Modificar", "Eliminar", "Otros"):
+            assert heading in html
+        # The admin's own word for "All" (its catalog comes first).
+        assert "> Todo</label>" in html
 
-
-@pytest.mark.django_db
-def test_the_matrix_in_spanish():
-    ct = ContentType.objects.get(app_label="demo", model="plan")
-    Permission.objects.create(content_type=ct, codename="export_plan", name="Export")
-    field = PermissionMultipleChoiceField(
-        queryset=Permission.objects.filter(content_type=ct)
-    )
-    with translation.override("es"):
-        html = field.widget.render("p", [])
-
-    for heading in ("Añadir", "Ver", "Modificar", "Eliminar", "Otros"):
-        assert heading in html
-    # The admin's own word for "All" (its catalog comes first).
-    assert "> Todo</label>" in html
-
-
-@pytest.mark.django_db
-def test_nothing_to_choose_in_spanish():
-    field = PermissionMultipleChoiceField(queryset=Permission.objects.none())
-    with translation.override("es"):
-        assert "No hay permisos disponibles." in field.widget.render("p", [])
+    @pytest.mark.django_db
+    def test_nothing_to_choose_in_spanish(self):
+        field = PermissionMultipleChoiceField(queryset=Permission.objects.none())
+        with translation.override("es"):
+            assert "No hay permisos disponibles." in field.widget.render("p", [])
