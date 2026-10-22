@@ -15,9 +15,11 @@
     max-width: 900px;
 }
 
+/* Too narrow for its columns, a section scrolls sideways (not the page). */
 .form-matrix-section {
     border: 1px solid var(--form-matrix-border);
     border-radius: 4px;
+    overflow-x: auto;
 }
 
 /* Unfold draws its chevron at the end of every summary, absolutely placed. */
@@ -45,9 +47,14 @@
     color: var(--form-matrix-quiet);
 }
 
-/* Fixed layout with the same widths in every section: the columns line up. */
+/*
+ * Fixed layout with the same widths in every section: the columns line up.
+ * Never narrower than their names ("Modificar", "Hinzufügen"…) nor than what
+ * "Others" needs: below that, the section scrolls.
+ */
 .form-matrix-section table {
     width: 100%;
+    min-width: 40em;
     border-collapse: collapse;
     table-layout: fixed;
 }
@@ -57,7 +64,7 @@
 }
 
 .form-matrix-column {
-    width: 11%;
+    width: max(11%, 7.5em);
 }
 
 .form-matrix-section th,
@@ -65,6 +72,15 @@
     padding: 4px 8px;
     text-align: center;
     vertical-align: middle;
+}
+
+/*
+ * Names break between words, never inside one: whatever the page around sets
+ * (Unfold's wrappers have overflow-wrap: break-word).
+ */
+.form-matrix-section th {
+    overflow-wrap: normal;
+    word-break: normal;
 }
 
 .form-matrix-section thead th {

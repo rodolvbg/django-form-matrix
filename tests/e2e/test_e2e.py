@@ -83,3 +83,47 @@ def test_permission_shortcuts(live_server, admin_page: Page):
         "delete_plan",
         "view_role",
     }
+
+
+@pytest.mark.parametrize("width", [1280, 760, 480])
+def test_column_names_are_never_cut(live_server, admin_page: Page, settings, width):
+    """However narrow, and whatever the page around says about breaking
+    words (Unfold's wrappers: overflow-wrap: break-word), the names of the
+    columns stay whole and apart ("Modificar" was cut as "Modific-ar"); a
+    section too narrow for them scrolls."""
+    settings.LANGUAGE_CODE = "es"
+    page = admin_page
+    page.set_viewport_size({"width": width, "height": 900})
+    page.goto(f"{live_server.url}/admin/demo/role/add/")
+    page.add_style_tag(content="form { overflow-wrap: anywhere; }")
+    demo = page.locator("details.form-matrix-section", has_text="Demo")
+    demo.locator("summary").click()
+
+    cells = demo.locator("thead th:not(:first-child)").evaluate_all(
+        """cells => cells.map(cell => {
+            const label = cell.querySelector("label") || cell;
+            const range = document.createRange();
+            range.selectNodeContents(label);
+            return {
+                text: label.textContent.trim(),
+                lines: new Set(
+                    [...range.getClientRects()].map(rect => Math.round(rect.top))
+                ).size,
+                fits: label.scrollWidth <= cell.clientWidth,
+            };
+        })"""
+    )
+    assert [c["text"] for c in cells] == [
+        "Añadir",
+        "Ver",
+        "Modificar",
+        "Eliminar",
+        "Otros",
+    ]
+    for cell in cells:
+        assert cell["fits"], cell
+        # The checkbox above, its name below: two lines, the name in one.
+        assert cell["lines"] <= 2, cell
+    # Too narrow, the section scrolls sideways.
+    scrolls = demo.evaluate("section => section.scrollWidth > section.clientWidth")
+    assert scrolls is (width < 600)
