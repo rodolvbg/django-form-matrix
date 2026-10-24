@@ -4,7 +4,7 @@ requires = [ "hatch-fancy-pypi-readme", "hatchling" ]
 
 [project]
 name = "django-form-matrix"
-version = "0.1.0"
+version = "0.1.1"
 description = """\
   A form field to fill a table of rows and columns, with a form field in every cell (checkboxes, numbers, choices...), \
   plus a ready-made permission matrix.\
